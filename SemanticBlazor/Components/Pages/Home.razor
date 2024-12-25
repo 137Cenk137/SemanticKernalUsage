@@ -1,0 +1,30 @@
+﻿@using Microsoft.SemanticKernel;
+
+@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+@code{
+protected override async Task    OnInitializedAsync(){
+
+    // Create kernel
+    var builder = Kernel.CreateBuilder();
+    builder.AddAzureOpenAIChatCompletion(
+    deploymentName: "[The name of your deployment]",
+    endpoint: "[Your Azure endpoint]",
+    apiKey: "[Your Azure OpenAI API key]",
+    modelId: "[The name of the model]" // optional
+    );
+    var kernel = builder.Build();
+    await base.OnInitializedAsync();
+
+    //var result = await kernel.InvokeStreamingAsync("");
+    var result = await kernel.InvokePromptAsync("write a story about you");
+
+    Console.WriteLine(result);
+
+    }
+}
